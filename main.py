@@ -1,4 +1,4 @@
-from colorama import Fore, Style
+from colorama import Fore, Back, Style
 
 # create game board
 
@@ -18,31 +18,38 @@ def print_board(board):
 # function to move x, o
 
 def move():
-    while True:
-        row = int(input("Enter the row number (1, 2, 3): ")) - 1
-        column = int(input("Enter the column number (1, 2 ,3): ")) - 1
+    #* while for repeat run
 
-        if 0 <= row <= 2 and 0 <= column <= 2 and board[row][column] == "":
-            return row, column
+    while True:
+        #? check value error
+
+        try:
+            row = int(input("Enter the row number (1, 2, 3): ")) - 1
+            column = int(input("Enter the column number (1, 2 ,3): ")) - 1
+        except ValueError:
+            print(Back.YELLOW + "Please Enter Number Only." + Back.RESET)
         else:
-            print(Fore.RED + "Enter a valid or unreserved row and column number." + Fore.RESET)
+            if 0 <= row <= 2 and 0 <= column <= 2 and board[row][column] == "":
+                return row, column
+            else:
+                print(Fore.RED + "Enter a valid or unreserved row and column number." + Fore.RESET)
 
 # function to check for win
 
 def win(player):
-    # check rows
+    #* check rows
     
     for row in board:
         if all(area == player for area in row):
             return True
         
-    # check columns
+    #* check columns
 
     for column in range(3):
         if all(board[row][column] == player for row in range(3)):
             return True
         
-    # check areas
+    #* check areas
 
     if all(board[i][i] == player for i in range(3)) or all(board[i][2-i] == player for i in range(3)):
         return True
@@ -59,6 +66,8 @@ def tie():
 def xo():
     players = ("X", "O")
     index = 0
+
+    #* while for repeat run
 
     while True:
         print_board(board)
